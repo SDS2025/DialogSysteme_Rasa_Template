@@ -1,0 +1,49 @@
+version: "3.1"
+
+intents:
+  - greet
+  - goodbye
+  - affirm
+  - deny
+  - door_1
+  - door_2
+  - door_3
+
+actions:
+ - action_hello_world
+
+slots:
+  data:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: null
+    mappings:
+    - type: custom
+
+responses:
+  utter_oha_text:
+  - text: "Oha! los gehts"
+
+  utter_greet:
+  - text: "Hey! How are you?"
+
+  utter_cheer_up:
+  - text: "Here is something to cheer you up:"
+    image: "https://i.imgur.com/nGF1K8f.jpg"
+
+  utter_did_that_help:
+  - text: "Did that help you?"
+
+  utter_happy:
+  - text: "Great, carry on!"
+
+  utter_goodbye:
+  - text: "Bye"
+
+  utter_door_1:
+  - text: "Du gehts durch Tür 1"
+
+  utter_door_2:
+  - text: "Du gehst durch Tür 2"
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true
