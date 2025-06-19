@@ -2,27 +2,10 @@ version: "3.1"
 
 rules:
 
-- rule: Say goodbye anytime the user says goodbye
-  steps:
-  - intent: goodbye
-  - action: utter_goodbye
 
 - rule: Greet
   steps:
   - intent: greet
-  - action: utter_oha_text
+  - action: action_initialize
+
   
-- rule: Bla
-  steps:
-  - intent: door_1
-  - action: action_hello_world
-
-- rule: Bla
-  steps:
-  - intent: door_2
-  - action: utter_door_2
-
-- rule: Bla
-  steps:
-  - intent: door_3
-  - action: action_hello_world

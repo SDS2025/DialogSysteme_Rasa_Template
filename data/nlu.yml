@@ -3,59 +3,49 @@ version: "3.1"
 nlu:
 - intent: greet
   examples: |
-    - hey
-    - hello
-    - hi
-    - hello there
-    - good morning
-    - good evening
-    - moin
-    - hey there
-    - let's go
-    - hey dude
-    - goodmorning
-    - goodevening
-    - good afternoon
+    - Hello
+    - Hi
+    - Good morning
 
-- intent: goodbye
+  
+- intent: inspect_table
   examples: |
-    - cu
-    - good by
-    - cee you later
-    - good night
-    - bye
-    - goodbye
-    - have a nice day
-    - see you around
-    - bye bye
-    - see you later
+    - I want to inspect the table
+    - Look at the table
+    - Check the table
 
-- intent: affirm
+  
+- intent: inspect_door
   examples: |
-    - yes
-    - y
-    - indeed
-    - of course
-    - that sounds good
-    - correct
+    - Look at the door
+    - Inspect the door
+    - Check the door
 
-- intent: deny
+  
+- intent: unlock_door
   examples: |
-    - no
-    - n
-    - never
-    - I don't think so
-    - don't like that
-    - no way
-    - not really
+    - Try to unlock the door
+    - Open the door
+    - Unlock the door
 
-- intent: door_1
+  
+- intent: go_left
   examples: |
-    - door one
+    - Go left in the corridor
+    - Turn left
 
-- intent: door_2
+  
+- intent: go_right
   examples: |
-    - door two
+    - Go right in the corridor
+    - Turn right
+
+  
+- intent: sleep
+  examples: |
+    - Go back to sleep
+    - Sleep again
+    - Try to sleep
 
 - intent: door_3
   examples: |
