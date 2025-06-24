@@ -101,7 +101,7 @@ class ActionInitialize(Action):
         print(tracker.latest_message)
 
         if tracker.get_slot('game_data') is None or tracker.get_slot('game_data') == "null":
-            game_data = {"has_key": False, "room": "start"}
+            game_data = {"has_key": False, "room": "start", "door1_open": False}
             
         else: game_data = tracker.get_slot('game_data')
 
@@ -111,17 +111,35 @@ class ActionInitialize(Action):
         msg = "IDK ask someone else"
         
         if user_intent == 'greet':
-            msg = "Hello there, give me your key (if you have any)"
+            msg = "You wake in a dark room with no memory of how you got here. There is a door and a small table in the room with you."
             game_data['has_key']= False
-        elif user_intent == 'door_3':
-            msg = "You open the door and find a key"
-            game_data['has_key']= True
-        elif user_intent== 'door_1':
+        elif user_intent == 'inspect_table':
             if(game_data['has_key']):
-                msg = "You open the door and escape"
+                msg = "You already picked up the key, which seems to be the only relevant thing on this table."
             else:
-                msg = "The door is verschlossen"
-        
+                game_data['has_key']= True
+                msg = "You look on the table. Between old books and dust, you find a key."
+        elif user_intent == 'inspect_door':
+            if(game_data['has_key']):
+                msg = "You already found a key. Would you like to use it?"
+            else:
+                game_data['has_key']= True
+                msg = "It seems like you would need a key to unlock this door."
+        elif user_intent== 'unlock_door':
+            if(game_data['has_key']& game_data['door1_open']==False):
+                game_data['door1_open']= True
+                msg = "You open the door and find yourself looking at an empty hallway. Do you wish to go left or right?"
+            if(game_data['has_key']& game_data['door1_open']):
+                msg = "You already opened the door and find yourself looking at an empty hallway once again. Do you wish to go left or right?"
+            else:
+                msg = "The door is still locked."
+        elif user_intent=='go_left':
+            msg = "You go to the left but find yourself facing a brick wall. You turn around and find yourself at the door you left through."        
+        elif user_intent=='go_right':
+            msg = "You go to the right and find a second door, which seems to be unlocked. You enter a second room."
+            game_data['room']= "second"
+        elif user_intent=='sleep':
+            msg= "YOu go back to sleep and wake up to your normal room. It was all just a dream."
 
         dispatcher.utter_message(text=msg)
 

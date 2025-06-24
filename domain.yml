@@ -17,26 +17,6 @@ slots:
       - type: custom
 
 
-#responses:
-  # utter_greet:
-  # - text: Welcome to your adventure! You're in a cold, dimly lit basement. 
-  # utter_basement_description:
-  # - text: You wake up in a cold, dimly lit basement. There's a door and a table in the room. What do you do?
-  # utter_inspect_table:
-  # - text: You find a small rusty key on the table.
-  # utter_empty_table:
-  # - text: The table is empty now.
-  # utter_inspect_door:
-  # - text: The door is old and sturdy, but it's locked. You'll need a key to open it.
-  # utter_try_unlock_door:
-  # - text: The door is locked. It seems you need a key to open it.
-  # utter_unlock_door:
-  # - text: The door creaks open, and you step into a dark corridor.
-  # utter_dead_end:
-  # - text: You reach a dead end and have to turn back.
-  # utter_go_right:
-  # - text: You go right and find another door leading into a second room.
-
 session_config:
   session_expiration_time: 60
   carry_over_slots_to_new_session: true
@@ -44,7 +24,3 @@ session_config:
 actions:
 - action_initialize
 - action_default_fallback
-# - action_inspect_door
-# - action_try_to_unlock_door
-# - action_go_left_in_corridor
-# - action_go_right_in_corridor
