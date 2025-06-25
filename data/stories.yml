@@ -1,4 +1,65 @@
-# version: "3.1"
-
+version: "3.1"
 stories:
 
+- story: Greet and show room
+  steps:
+    - intent: greet
+    - action: utter_intro
+
+- story: Inspect table
+  steps:
+    - intent: inspect_table
+    - action: utter_table_description
+
+- story: Bookshelf and choose royal
+  steps:
+    - intent: inspect_bookshelf
+    - action: utter_bookshelf
+    - intent: Royal_book
+    - action: action_memory
+
+- story: Bookshelf and choose cooking
+  steps:
+    - intent: inspect_bookshelf
+    - action: utter_bookshelf
+    - intent: Cooking_book
+    - action: action_memory
+
+- story: Bookshelf and choose legends
+  steps:
+    - intent: inspect_bookshelf
+    - action: utter_bookshelf
+    - intent: Legends_book
+    - action: action_memory
+    
+- story: Inspect painting east
+  steps:
+    - intent: painting_east
+    - action: action_memory
+
+- story: Inspect painting north
+  steps:
+    - intent: painting_north
+    - action: action_memory
+
+- story: Inspect painting west
+  steps:
+    - intent: painting_west
+    - action: action_memory
+
+- story: memory
+  steps:
+    - intent: memory
+    - action: action_memory
+
+- story: Return to room
+  steps:
+    - intent: return_to_room
+    - action: utter_intro
+
+- story: Check door and enter code
+  steps:
+    - intent: check_door
+    - action: action_enter_code
+    - intent: enter_code
+    - action: action_enter_code
