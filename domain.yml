@@ -29,6 +29,8 @@ slots:
 responses:
   utter_correct:
     - text: "That's correct! You unlocked it. 🎉"
+  utter_too_easy:
+    - text: "Did you really think it will be that easy?"
   utter_wrong:
     - text: "Nope, {code} is not the right code. Try again."
 

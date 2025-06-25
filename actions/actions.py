@@ -154,11 +154,24 @@ class ActionRecallMemory(Action):
 class ActionCheckCode(Action):
     def name(self):
         return "action_check_code"
+    
+    def get_code_parts(self, code: str) -> list[int]:
+        code_l = list(code)
+        try:
+            code_l = [int(x) for x in code_l]
+        except Exception as ex:
+            print(f'get_code_parts exception: {ex}') # hm maybe not just throw an ex
+        return code_l
+
 
     def run(self, dispatcher, tracker: Tracker, domain):
         correct_code = "123"
         code = next(tracker.get_latest_entity_values("code"), None)
+        correct_code_l = self.get_code_parts(correct_code)
+        code_l = self.get_code_parts(code)
         
+        if len(set(code_l)) == 1:
+            dispatcher.utter_message(response="utter_too_easy")
         if code == correct_code:
             dispatcher.utter_message(response="utter_correct")
         else:
