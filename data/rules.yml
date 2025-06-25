@@ -43,8 +43,3 @@ rules:
   steps:
   - intent: sleep
   - action: action_initialize
-
-- rule: Return to room anytime
-  steps:
-    - intent: return_to_room
-    - action: utter_intro
