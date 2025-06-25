@@ -8,7 +8,21 @@ intents:
 - go_left
 - go_right
 - sleep
-
+- greet
+- inspect_table2
+- inspect_painting
+- painting_east
+- painting_north
+- painting_west
+- inspect_bookshelf
+- Cooking_book
+- Royal_book
+- Legends_book
+- check_door
+- enter_code
+- recall_memory
+- memory
+- return_to_room
 
 slots: 
   game_data: 
@@ -16,7 +30,12 @@ slots:
     initial_value: null
     mappings: 
       - type: custom
-
+      
+  game_data2:
+    type: rasa.shared.core.slots.AnySlot
+    initial_value: {null}
+    mappings:
+      - type: custom
 
 session_config:
   session_expiration_time: 60
@@ -25,3 +44,82 @@ session_config:
 actions:
 - action_initialize
 - action_default_fallback
+- action_enter_code
+- action_memory
+
+esponses:
+  utter_intro:
+    - text: >
+        You enter a grand room lit by flickering torches. A lavish banquet table sits in the center.
+        Paintings hang on the east, north, and west walls. There's a bookshelf beside the door you entered,
+        and another locked door on the far end of the room, secured with a number padlock.
+
+  utter_table_description:
+    - text: >
+        The banquet table is ornate, set with silverware and crystal goblets.
+        Roasted pheasants and golden apples sit untouched.
+        The tablecloth is embroidered with scenes of ancient battles, but nothing unusual stands out.
+
+  utter_painting_east:
+    - text: >
+        The painting on the east wall shows King Alric in ornate silver armor. Faintly scrawled in the corner: the number 4.
+
+  utter_painting_north:
+    - text: >
+        Queen Berena in a regal gown, a dagger and scroll in hand. Painted into her necklace: the number 9.
+
+  utter_painting_west:
+    - text: >
+        Prince Cedric with a falcon on his arm. The number 2 is sewn into the falcon’s jess.
+
+  utter_bookshelf:
+    - text: >
+        There are three books: "Cooking for Nobles", "Legends of the Realm", and "Royal Bloodlines".
+        Which do you want to inspect?
+
+  utter_cooking_book:
+    - text: >
+        A delightful book of feasts and sauces... but nothing helpful.
+
+  utter_legends_book:
+    - text: >
+        Exciting stories, but no information about your puzzle.
+
+  utter_royal_book:
+    - text: >
+        It says: King Alric reigned first, then Queen Berena, and finally Prince Cedric.
+
+  utter_memory_empty:
+    - text: >
+        You don't recall any details yet.
+
+  utter_memory_book:
+    - text: >
+        King Alric reigned first, then Queen Berena, and finally Prince Cedric.
+
+  utter_code_success:
+    - text: >
+        You enter the code: 4, 9, 2. The lock beeps and clicks open. The door creaks ajar. Well done, adventurer.
+
+  utter_code_wrong_order:
+    - text: >
+        These must be the right numbers, but maybe not the right order. Try again.
+  
+  utter_code_numbers:
+    - text: >
+        Prince Cedric - 2 , Queen Berena - 9, King Alric - 4.
+
+  utter_memory_lock:
+    - text: >
+         1. King Alric - 4 , 2. Queen Berena - 9 , 3. Prince Cedric - 2
+
+  utter_code_wrong:
+    - text: >
+        The lock buzzes angrily. That's not the right code.
+
+  utter_goodbye:
+    - text: Goodbye, adventurer.
+
+  utter_error:
+    - text: >
+        I'm sorry, I didn't understand that. Can you try again?
