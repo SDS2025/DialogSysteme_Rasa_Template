@@ -5,124 +5,118 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 
-# This is a simple example for a custom action which utters "Hello World!"
-
 from typing import Any, Text, Dict, List
-
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
-
-
-# print("oha actions loaded ")
-
-# class ActionWakeUpInBasement(Action):
-#     def name(self) -> str:
-#         return "action_wake_up_in_basement"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You wake up in a cold, dimly lit basement. There's a door and a table in the room. What do you do?")
-#         return []
-
-# class ActionInspectTable(Action):
-#     def name(self) -> str:
-#         return "action_inspect_table"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         # Check if the key has already been picked up
-#         if tracker.get_slot("key_found"):
-#             dispatcher.utter_message(text="The table is empty now.")
-#         else:
-#             dispatcher.utter_message(text="You find a small rusty key on the table.")
-#             return [SlotSet("key_found", True)]
-#         return []
-
-# class ActionInspectDoor(Action):
-#     def name(self) -> str:
-#         return "action_inspect_door"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="The door is old and sturdy, but it's locked. You'll need a key to open it.")
-#         return []
-
-# class ActionTryToUnlockDoor(Action):
-#     def name(self) -> str:
-#         return "action_try_to_unlock_door"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         # Check if the user has the key
-#         has_key = tracker.get_slot("key_found")
-
-#         if has_key:
-#             dispatcher.utter_message(text="The door creaks open, and you step into a dark corridor.")
-#             return [SlotSet("door_unlocked", True)]
-#         else:
-#             dispatcher.utter_message(text="The door is locked. It seems you need a key to open it.")
-#             return []
-
-# class ActionGoLeftInCorridor(Action):
-#     def name(self) -> str:
-#         return "action_go_left_in_corridor"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You reach a dead end and have to turn back.")
-#         return []
-
-# class ActionGoRightInCorridor(Action):
-#     def name(self) -> str:
-#         return "action_go_right_in_corridor"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You go right and find another door leading into a second room.")
-#         return []
-
-
-class ActionDefaultFallback(Action):
-
-    def name(self) -> Text: 
-        return "action_default_fallback"
-    
-    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-        dispatcher.utter_message(text="Please repeat your answer again. If it does not work, try phrasing it differently.")
-        return []
-
-
-
-class ActionInitialize(Action):
+class ActionMemory(Action):
 
     def name(self) -> Text:
-        return "action_initialize"
-    
+        return "action_memory"
 
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
         print(tracker.latest_message)
 
-        if tracker.get_slot('game_data') is None or tracker.get_slot('game_data') == "null":
-            game_data = {"has_key": False, "room": "start"}
-            
-        else: game_data = tracker.get_slot('game_data')
+# Slot für Bücher
+        selected_book = tracker.latest_message.get('text', '').strip()
 
+        default_game_data = {
+            "order": False,
+            "door_lock": False,
+            "painting east": False,
+            "painting west": False,
+            "painting north": False
+        }
 
+# Bestehenden Slot holen oder neues Dict starten
+        game_data2 = tracker.get_slot('game_data2') or {}
+
+# Fehlende Keys auffüllen
+        for key, default in default_game_data.items():
+           game_data2.setdefault(key, default)
         
         user_intent = tracker.latest_message['intent']['name']
-        msg = "IDK ask someone else"
-        
-        if user_intent == 'greet':
-            msg = "Hello there, give me your key (if you have any)"
-            game_data['has_key']= False
-        elif user_intent == 'door_3':
-            msg = "You open the door and find a key"
-            game_data['has_key']= True
-        elif user_intent== 'door_1':
-            if(game_data['has_key']):
-                msg = "You open the door and escape"
+# Logik für Memory
+        if user_intent == 'memory':
+            if game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]:
+                dispatcher.utter_message(response="utter_code_numbers")
+            elif game_data2["order"] and (game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]):
+                dispatcher.utter_message(response="utter_memory_empty")
+            elif game_data2["order"] and game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]:
+                dispatcher.utter_message(response="utter_memory_lock")
+            elif game_data2["order"]== True:
+                dispatcher.utter_message(response="utter_memory_book")
             else:
-                msg = "The door is verschlossen"
-        
+                dispatcher.utter_message(response="utter_error")      
+ # Logik für Bücher
+        elif user_intent == 'Cooking_book':
+            dispatcher.utter_message(response="utter_cooking_book")
+        elif user_intent == 'Legends_book':
+            dispatcher.utter_message(response="utter_legends_book")
+        elif user_intent == 'Royal_book':
+            dispatcher.utter_message(response="utter_royal_book")
+            game_data2['order'] = True
 
-        dispatcher.utter_message(text=msg)
+        # Logik für Gemälde
+        elif user_intent == 'painting_east':
+            dispatcher.utter_message(response="utter_painting_east")
+            game_data2['painting east'] = True
+        elif user_intent == 'painting_west':
+            dispatcher.utter_message(response="utter_painting_west")
+            game_data2['painting west'] = True
+        elif user_intent == 'painting_north':
+            dispatcher.utter_message(response="utter_painting_north")
+            game_data2['painting north'] = True
 
-        return [SlotSet("game_data", game_data)]
+        # Wenn kein Intent gematcht wurde
+        else:
+            dispatcher.utter_message(text="I couldn't find that book.")
+
+        return [SlotSet("game_data2", game_data2)]
+    
+       
+
+class ActionEnterCode(Action):
+    def name(self) -> Text:
+        return "action_enter_code"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        text = tracker.latest_message.get('text', '')
+        if "492" in text or "4 9 2" in text:
+            dispatcher.utter_message(response="utter_code_success")
+            return []
+        elif "4" in text and "9" in text and "2" in text:
+            dispatcher.utter_message(response="utter_code_wrong_order")
+        else:
+            dispatcher.utter_message(response="utter_code_wrong")
+        return []
+
+#class ActionRecallMemory(Action):
+#    def name(self) -> Text:
+#        return "action_recall_memory"
+
+#    def run(self, dispatcher: CollectingDispatcher,
+#            tracker: Tracker,
+#            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+#
+#        mem_text = []
+#        if tracker.get_slot("mem_east"):
+#            mem_text.append("King Alric - 4")
+#        if tracker.get_slot("mem_north"):
+#            mem_text.append("Queen Berena - 9")
+#        if tracker.get_slot("mem_west"):
+#            mem_text.append("Prince Cedric - 2")#
+#
+ #       if mem_text:
+ #           dispatcher.utter_message(response="utter_memory_recall")
+  #          for line in mem_text:
+  #              dispatcher.utter_message(text=line)
+ #       else:
+ #           dispatcher.utter_message(response="utter_memory_empty")
+ #       return []
