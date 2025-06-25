@@ -8,7 +8,6 @@ intents:
 - go_left
 - go_right
 - sleep
-- greet
 - inspect_table2
 - inspect_painting
 - painting_east
@@ -25,7 +24,6 @@ intents:
 - return_to_room
 
 entities:
-  - book
   - code
   
 slots: 
@@ -41,9 +39,6 @@ slots:
     mappings:
       - type: custom
 
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
 
 actions:
 - action_initialize
@@ -51,7 +46,7 @@ actions:
 - action_enter_code
 - action_memory
 
-esponses:
+responses:
   utter_intro:
     - text: >
         You enter a grand room lit by flickering torches. A lavish banquet table sits in the center.
@@ -127,3 +122,7 @@ esponses:
   utter_error:
     - text: >
         I'm sorry, I didn't understand that. Can you try again?
+
+  session_config:
+    session_expiration_time: 60
+    carry_over_slots_to_new_session: true
