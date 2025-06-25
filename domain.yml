@@ -58,9 +58,6 @@ slots:
     mappings:
       - type: custom
 
-  utter_goodbye:
-    - text: Goodbye, adventurer.
-
 actions:
 - action_initialize
 - action_default_fallback
@@ -138,12 +135,13 @@ responses:
         The lock buzzes angrily. That's not the right code.
 
   utter_goodbye:
-    - text: Goodbye, adventurer.
+    - text: >
+        Goodbye, adventurer.
 
   utter_error:
     - text: >
         I'm sorry, I didn't understand that. Can you try again?
 
-  session_config:
-    session_expiration_time: 60
-    carry_over_slots_to_new_session: true
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

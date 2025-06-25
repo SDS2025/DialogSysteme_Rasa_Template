@@ -34,6 +34,7 @@ nlu:
     - I want to inspect the table
     - Look at the table
     - Check the table
+    - table
 
 # TODO: check this
 - intent: inspect_banquet_table

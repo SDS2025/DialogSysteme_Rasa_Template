@@ -206,26 +206,26 @@ class ActionEnterCode(Action):
             dispatcher.utter_message(response="utter_code_wrong")
         return []
     
-# class ActionRecallMemory(Action):
-#     def name(self) -> Text:
-#         return "action_recall_memory"
+class ActionRecallMemory(Action):
+    def name(self) -> Text:
+        return "action_recall_memory"
 
-#     def run(self, dispatcher: CollectingDispatcher,
-#             tracker: Tracker,
-#             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-#         mem_text = []
-#         if tracker.get_slot("mem_east"):
-#             mem_text.append("King Alric - 4")
-#         if tracker.get_slot("mem_north"):
-#             mem_text.append("Queen Berena - 9")
-#         if tracker.get_slot("mem_west"):
-#             mem_text.append("Prince Cedric - 2")
+        mem_text = []
+        if tracker.get_slot("mem_east"):
+            mem_text.append("King Alric - 4")
+        if tracker.get_slot("mem_north"):
+            mem_text.append("Queen Berena - 9")
+        if tracker.get_slot("mem_west"):
+            mem_text.append("Prince Cedric - 2")
 
-#         if mem_text:
-#             dispatcher.utter_message(response="utter_memory_recall")
-#             for line in mem_text:
-#                 dispatcher.utter_message(text=line)
-#         else:
-#             dispatcher.utter_message(response="utter_memory_empty")
-#         return []
+        if mem_text:
+            dispatcher.utter_message(response="utter_memory_recall")
+            for line in mem_text:
+                dispatcher.utter_message(text=line)
+        else:
+            dispatcher.utter_message(response="utter_memory_empty")
+        return []

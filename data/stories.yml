@@ -1,4 +1,5 @@
 version: "3.1"
+
 stories:
 
 # FIXME
@@ -11,10 +12,10 @@ stories:
   steps:
     - intent: inspect_banquet_table
     - action: utter_table_description
-# - story: Inspect table
-#   steps:
-#     - intent: inspect_table2
-#     - action: utter_table_description
+
+- story: Inspect table
+  steps:
+    - intent: inspect_table2
 
 - story: Bookshelf and choose royal
   steps:
