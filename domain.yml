@@ -1,5 +1,6 @@
 version: '3.1'
 intents:
+- inventory 
 - greet
 - inspect_table
 - inspect_door
@@ -7,7 +8,22 @@ intents:
 - go_left
 - go_right
 - sleep
+- inspect_table_2
+- inspect_painting
+- painting_east
+- painting_north
+- painting_west
+- inspect_bookshelf
+- choose_book
+- check_door
+- enter_code
+- recall_memory
+- quit
+- return_to_room
 
+entities:
+  - book
+  - code
 
 slots: 
   game_data: 
