@@ -232,7 +232,7 @@ class ActionMemory(Action):
         return [SlotSet("game_data2", game_data2)]
   
 #Code Eingabe Variante Lara  
- class ActionEnterCode(Action):
+class ActionEnterCode(Action):
     def name(self) -> Text:
         return "action_enter_code"
 
