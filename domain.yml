@@ -24,6 +24,10 @@ intents:
 - memory
 - return_to_room
 
+entities:
+  - book
+  - code
+  
 slots: 
   game_data: 
     type: rasa.shared.core.slots.AnySlot
