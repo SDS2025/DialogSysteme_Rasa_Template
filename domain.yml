@@ -9,6 +9,7 @@ intents:
   - go_left
   - go_right
   - sleep
+  - inspect_table2
   - inspect_painting
   - painting_east
   - painting_north
@@ -57,6 +58,14 @@ slots:
     mappings:
       - type: custom
 
+  utter_goodbye:
+    - text: Goodbye, adventurer.
+
+actions:
+- action_initialize
+- action_default_fallback
+- action_enter_code
+- action_memory
 
 responses:
   utter_intro:
@@ -81,7 +90,7 @@ responses:
 
   utter_painting_west:
     - text: >
-        Prince Cedric with a falcon on his arm. The number 2 is sewn into the falcon�s jess.
+        Prince Cedric with a falcon on his arm. The number 2 is sewn into the falcon’s jess.
 
   utter_bookshelf:
     - text: >
@@ -134,14 +143,7 @@ responses:
   utter_error:
     - text: >
         I'm sorry, I didn't understand that. Can you try again?
-        
-        
-session_config:
-  session_expiration_time: 60
-  carry_over_slots_to_new_session: true
 
-actions:
-  - action_enter_code
-  - action_memory
-  - action_initialize
-  - action_default_fallback
+  session_config:
+    session_expiration_time: 60
+    carry_over_slots_to_new_session: true
