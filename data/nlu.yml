@@ -15,20 +15,105 @@ nlu:
     - Hello
     - Hi
     - Good morning
+    - hey
+    - greetings
 
+- intent: return_to_room
+  examples: |
+    - room
+    - go back
+    - return to the room
+    - back to the center
+    - return
+    - go back to main room
+    - start over
+    - main room
   
 - intent: inspect_table
   examples: |
     - I want to inspect the table
     - Look at the table
     - Check the table
+    - table
 
+# TODO: check this
+- intent: inspect_banquet_table
+  examples: |
+    - I want to look at the banquet table
+    - inspect the banquet table
+    - look at the banquet table
+    - banquet table
+
+- intent: inspect_painting
+  examples: |
+    - look at the paintings
+    - inspect the painting on the east wall
+    - look at the west painting
+    - show me the north painting
+    - paintings
+
+- intent: painting_east
+  examples: |
+    - look at the east wall
+    - east painting
+    - east
+    - painting east
+    - east wall
+
+- intent: painting_north
+  examples: |
+    - look at the north wall
+    - north painting
+    - north
+    - painting north
+    - north wall
+
+- intent: painting_west
+  examples: |
+    - look at the west wall
+    - west painting
+    - west
+    - painting west 
+    - west wall
+
+- intent: inspect_bookshelf
+  examples: |
+    - look at the bookshelf
+    - check bookshelf
+    - inspect the books
+    - bookshelf
+    - books 
+
+- intent: Cooking_book
+  examples: |
+    - Cooking for Nobles
+    - Cooking book
+    - Cooking
+
+- intent: Royal_book
+  examples: |
+    - Royal Bloodlines
+    - Royal book
+    - Royal
+
+- intent: Legends_book
+  examples: |
+    - Legends of the Realm
+    - Legends book
+    - Legends   
   
 - intent: inspect_door
   examples: |
     - Look at the door
     - Inspect the door
     - Check the door
+    
+- intent: check_door
+  examples: |
+    - check the door
+    - go to the door
+    - look at the lock
+    - locked door
 
   
 - intent: unlock_door
@@ -113,38 +198,18 @@ nlu:
     - inspect the books
     - bookshelf
     - books 
-
-- intent: Cooking_book
-  examples: |
-    - Cooking for Nobles
-    - Cooking book
-    - Cooking
-
-- intent: Royal_book
-  examples: |
-    - Royal Bloodlines
-    - Royal book
-    - Royal
-
-- intent: Legends_book
-  examples: |
-    - Legends of the Realm
-    - Legends book
-    - Legends   
-
-- intent: check_door
-  examples: |
-    - check the door
-    - go to the door
-    - look at the lock
-    - locked door
-
+    
 - intent: enter_code
   examples: |
     - the code is 492
     - try 4 9 2
     - enter code 492
 
+#- intent: recall_memory
+#  examples: |
+#    - recall
+#    - memory
+#    - what have I seen
 
 - intent: memory
   examples: |

@@ -1,44 +1,62 @@
 version: '3.1'
 intents:
-- inventory 
-- greet
-- inspect_table
-- inspect_door
-- unlock_door
-- go_left
-- go_right
-- sleep
-- inspect_table2
-- inspect_painting
-- painting_east
-- painting_north
-- painting_west
-- inspect_bookshelf
-- Cooking_book
-- Royal_book
-- Legends_book
-- check_door
-- enter_code
-- recall_memory
-- memory
-- return_to_room
+  - inventory 
+  - greet
+  - inspect_table
+  - inspect_banquet_table
+  - inspect_door
+  - unlock_door
+  - go_left
+  - go_right
+  - sleep
+  - inspect_table2
+  - inspect_painting
+  - painting_east
+  - painting_north
+  - painting_west
+  - inspect_bookshelf
+  - Cooking_book
+  - Royal_book
+  - Legends_book
+  - check_door
+  - enter_code
+  - recall_memory
+  - memory
+  - return_to_room
 
 entities:
+  - book
   - code
-  
+
 slots: 
   game_data: 
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
     mappings: 
       - type: custom
-      
+  mem_east:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: custom
+
+  mem_north:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: custom
+
+  mem_west:
+    type: bool
+    initial_value: false
+    mappings:
+      - type: custom
+
   game_data2:
     type: rasa.shared.core.slots.AnySlot
     initial_value: {null}
     mappings:
       - type: custom
-
 
 actions:
 - action_initialize
@@ -117,12 +135,13 @@ responses:
         The lock buzzes angrily. That's not the right code.
 
   utter_goodbye:
-    - text: Goodbye, adventurer.
+    - text: >
+        Goodbye, adventurer.
 
   utter_error:
     - text: >
         I'm sorry, I didn't understand that. Can you try again?
 
-  session_config:
-    session_expiration_time: 60
-    carry_over_slots_to_new_session: true
+session_config:
+  session_expiration_time: 60
+  carry_over_slots_to_new_session: true

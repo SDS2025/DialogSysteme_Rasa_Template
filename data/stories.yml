@@ -1,15 +1,21 @@
 version: "3.1"
+
 stories:
 
-- story: Greet and show room
+# FIXME
+# - story: Greet and show room
+#   steps:
+#     - intent: greet
+#     - action: utter_intro
+
+- story: Inspect table
   steps:
-    - intent: greet
-    - action: utter_intro
+    - intent: inspect_banquet_table
+    - action: utter_table_description
 
 - story: Inspect table
   steps:
     - intent: inspect_table2
-    - action: utter_table_description
 
 - story: Bookshelf and choose royal
   steps:
@@ -52,10 +58,11 @@ stories:
     - intent: memory
     - action: action_memory
 
-- story: Return to room
-  steps:
-    - intent: return_to_room
-    - action: utter_intro
+# FIXME: Rodi: conctradicting with rules
+# - story: Return to room
+#   steps:
+#     - intent: return_to_room
+#     - action: utter_intro
 
 - story: Check door and enter code
   steps:

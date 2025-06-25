@@ -5,8 +5,6 @@
 # https://rasa.com/docs/rasa/custom-actions
 
 
-# This is a simple example for a custom action which utters "Hello World!"
-
 from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
@@ -108,50 +106,8 @@ class ActionChooseBook(Action):
         else:
             dispatcher.utter_message(text="I couldn't find that book.")
         return []
+    
 
-class ActionEnterCode(Action):
-    def name(self) -> Text:
-        return "action_enter_code"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        text = tracker.latest_message.get('text', '')
-        if "492" in text or "4 9 2" in text:
-            dispatcher.utter_message(response="utter_code_success")
-            return []
-        elif "4" in text and "9" in text and "2" in text:
-            dispatcher.utter_message(response="utter_code_wrong_order")
-        else:
-            dispatcher.utter_message(response="utter_code_wrong")
-        return []
-
-class ActionRecallMemory(Action):
-    def name(self) -> Text:
-        return "action_recall_memory"
-
-    def run(self, dispatcher: CollectingDispatcher,
-            tracker: Tracker,
-            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
-
-        mem_text = []
-        if tracker.get_slot("mem_east"):
-            mem_text.append("King Alric - 4")
-        if tracker.get_slot("mem_north"):
-            mem_text.append("Queen Berena - 9")
-        if tracker.get_slot("mem_west"):
-            mem_text.append("Prince Cedric - 2")
-
-        if mem_text:
-            dispatcher.utter_message(response="utter_memory_recall")
-            for line in mem_text:
-                dispatcher.utter_message(text=line)
-        else:
-            dispatcher.utter_message(response="utter_memory_empty")
-        return []
-
-# Lara Version Room 2
 class ActionMemory(Action):
 
     def name(self) -> Text:
@@ -230,8 +186,8 @@ class ActionMemory(Action):
             dispatcher.utter_message(text="I couldn't find that book.")
 
         return [SlotSet("game_data2", game_data2)]
-  
-#Code Eingabe Variante Lara  
+       
+
 class ActionEnterCode(Action):
     def name(self) -> Text:
         return "action_enter_code"
@@ -248,4 +204,28 @@ class ActionEnterCode(Action):
             dispatcher.utter_message(response="utter_code_wrong_order")
         else:
             dispatcher.utter_message(response="utter_code_wrong")
+        return []
+    
+class ActionRecallMemory(Action):
+    def name(self) -> Text:
+        return "action_recall_memory"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        mem_text = []
+        if tracker.get_slot("mem_east"):
+            mem_text.append("King Alric - 4")
+        if tracker.get_slot("mem_north"):
+            mem_text.append("Queen Berena - 9")
+        if tracker.get_slot("mem_west"):
+            mem_text.append("Prince Cedric - 2")
+
+        if mem_text:
+            dispatcher.utter_message(response="utter_memory_recall")
+            for line in mem_text:
+                dispatcher.utter_message(text=line)
+        else:
+            dispatcher.utter_message(response="utter_memory_empty")
         return []
