@@ -55,4 +55,100 @@ nlu:
     - Go back to sleep
     - Sleep again
     - Try to sleep
+#room 2
+- intent: return_to_room
+  examples: |
+    - room
+    - go back
+    - return to the room
+    - back to the center
+    - return
+    - go back to main room
+    - start over
+    - main room
 
+- intent: inspect_table2
+  examples: |
+    - I want to look at the table
+    - inspect the banquet table
+    - look at the table
+    - table
+
+- intent: inspect_painting
+  examples: |
+    - look at the paintings
+    - inspect the painting on the east wall
+    - look at the west painting
+    - show me the north painting
+    - paintings
+
+- intent: painting_east
+  examples: |
+    - look at the east wall
+    - east painting
+    - east
+    - painting east
+    - east wall
+
+- intent: painting_north
+  examples: |
+    - look at the north wall
+    - north painting
+    - north
+    - painting north
+    - north wall
+
+- intent: painting_west
+  examples: |
+    - look at the west wall
+    - west painting
+    - west
+    - painting west 
+    - west wall
+
+- intent: inspect_bookshelf
+  examples: |
+    - look at the bookshelf
+    - check bookshelf
+    - inspect the books
+    - bookshelf
+    - books 
+
+- intent: Cooking_book
+  examples: |
+    - Cooking for Nobles
+    - Cooking book
+    - Cooking
+
+- intent: Royal_book
+  examples: |
+    - Royal Bloodlines
+    - Royal book
+    - Royal
+
+- intent: Legends_book
+  examples: |
+    - Legends of the Realm
+    - Legends book
+    - Legends   
+
+- intent: check_door
+  examples: |
+    - check the door
+    - go to the door
+    - look at the lock
+    - locked door
+
+- intent: enter_code
+  examples: |
+    - the code is 492
+    - try 4 9 2
+    - enter code 492
+
+
+- intent: memory
+  examples: |
+    - memory
+    - recall memory
+    - what do I remember
+    - what have I seen
