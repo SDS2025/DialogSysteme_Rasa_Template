@@ -1,56 +1,111 @@
-version: "3.1"
 
+version: "3.1"
 nlu:
 - intent: greet
   examples: |
-    - Hello
-    - Hi
-    - Good morning
+    - hello
+    - hi
+    - hey
+    - greetings
 
-  
+- intent: return_to_room
+  examples: |
+    - room
+    - go back
+    - return to the room
+    - back to the center
+    - return
+    - go back to main room
+    - start over
+    - main room
+
 - intent: inspect_table
   examples: |
-    - I want to inspect the table
-    - Look at the table
-    - Check the table
+    - I want to look at the table
+    - inspect the banquet table
+    - look at the table
+    - table
 
-  
-- intent: inspect_door
+- intent: inspect_painting
   examples: |
-    - Look at the door
-    - Inspect the door
-    - Check the door
+    - look at the paintings
+    - inspect the painting on the east wall
+    - look at the west painting
+    - show me the north painting
+    - paintings
 
-  
-- intent: unlock_door
+- intent: painting_east
   examples: |
-    - Try to unlock the door
-    - Open the door
-    - Unlock the door
+    - look at the east wall
+    - east painting
+    - east
+    - painting east
+    - east wall
 
-  
-- intent: go_left
+- intent: painting_north
   examples: |
-    - Go left in the corridor
-    - Turn left
+    - look at the north wall
+    - north painting
+    - north
+    - painting north
+    - north wall
 
-  
-- intent: go_right
+- intent: painting_west
   examples: |
-    - Go right in the corridor
-    - Turn right
+    - look at the west wall
+    - west painting
+    - west
+    - painting west 
+    - west wall
 
-  
-- intent: sleep
+- intent: inspect_bookshelf
   examples: |
-    - Go back to sleep
-    - Sleep again
-    - Try to sleep
+    - look at the bookshelf
+    - check bookshelf
+    - inspect the books
+    - bookshelf
+    - books 
 
-- intent: door_3
+- intent: Cooking_book
   examples: |
-    - the other door
-    - door three
-    - the door no one knows about
-    - the unknown door
-    - the secret door
+    - Cooking for Nobles
+    - Cooking book
+    - Cooking
+
+- intent: Royal_book
+  examples: |
+    - Royal Bloodlines
+    - Royal book
+    - Royal
+
+- intent: Legends_book
+  examples: |
+    - Legends of the Realm
+    - Legends book
+    - Legends   
+
+- intent: check_door
+  examples: |
+    - check the door
+    - go to the door
+    - look at the lock
+    - locked door
+
+- intent: enter_code
+  examples: |
+    - the code is 492
+    - try 4 9 2
+    - enter code 492
+
+#- intent: recall_memory
+#  examples: |
+#    - recall
+#    - memory
+#    - what have I seen
+
+- intent: memory
+  examples: |
+    - memory
+    - recall memory
+    - what do I remember
+    - what have I seen
