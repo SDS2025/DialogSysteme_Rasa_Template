@@ -72,7 +72,7 @@ class ActionInitialize(Action):
                     msg = "You open the door and find yourself looking at an empty hallway. Do you wish to go left or right?"
                     game_data['door1_open']= True
                 if(game_data['has_key']& game_data['door1_open']):
-                    msg = "You already opened the door and find yourself looking at an empty hallway once again. Do you wish to go left or right?"
+                    msg = "You open the door and find yourself looking at an empty hallway . Do you wish to go left or right?"
                 else:
                     msg = "The door is still locked."
             elif user_intent=='go_left':
