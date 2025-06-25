@@ -230,5 +230,22 @@ class ActionMemory(Action):
             dispatcher.utter_message(text="I couldn't find that book.")
 
         return [SlotSet("game_data2", game_data2)]
-    
-       
+  
+#Code Eingabe Variante Lara  
+ class ActionEnterCode(Action):
+    def name(self) -> Text:
+        return "action_enter_code"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        text = tracker.latest_message.get('text', '')
+        if "492" in text or "4 9 2" in text:
+            dispatcher.utter_message(response="utter_code_success")
+            return []
+        elif "4" in text and "9" in text and "2" in text:
+            dispatcher.utter_message(response="utter_code_wrong_order")
+        else:
+            dispatcher.utter_message(response="utter_code_wrong")
+        return []
