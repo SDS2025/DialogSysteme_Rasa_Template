@@ -2,10 +2,44 @@ version: "3.1"
 
 rules:
 
+- rule: inventory
+  steps: 
+  - intent: inventory
+  - action: action_initialize
 
 - rule: Greet
   steps:
   - intent: greet
   - action: action_initialize
 
-  
+
+- rule: inspect_table
+  steps:
+  - intent: inspect_table
+  - action: action_initialize
+
+
+- rule: inspect_door
+  steps:
+  - intent: inspect_door
+  - action: action_initialize
+
+- rule: unlock_door
+  steps:
+  - intent: unlock_door
+  - action: action_initialize
+
+- rule: go_left
+  steps:
+  - intent: go_left
+  - action: action_initialize
+
+- rule: go_right
+  steps:
+  - intent: go_right
+  - action: action_initialize
+
+- rule: sleep
+  steps:
+  - intent: sleep
+  - action: action_initialize

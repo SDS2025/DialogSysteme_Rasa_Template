@@ -14,70 +14,6 @@ from rasa_sdk.executor import CollectingDispatcher
 from rasa_sdk.events import SlotSet
 
 
-
-# print("oha actions loaded ")
-
-# class ActionWakeUpInBasement(Action):
-#     def name(self) -> str:
-#         return "action_wake_up_in_basement"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You wake up in a cold, dimly lit basement. There's a door and a table in the room. What do you do?")
-#         return []
-
-# class ActionInspectTable(Action):
-#     def name(self) -> str:
-#         return "action_inspect_table"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         # Check if the key has already been picked up
-#         if tracker.get_slot("key_found"):
-#             dispatcher.utter_message(text="The table is empty now.")
-#         else:
-#             dispatcher.utter_message(text="You find a small rusty key on the table.")
-#             return [SlotSet("key_found", True)]
-#         return []
-
-# class ActionInspectDoor(Action):
-#     def name(self) -> str:
-#         return "action_inspect_door"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="The door is old and sturdy, but it's locked. You'll need a key to open it.")
-#         return []
-
-# class ActionTryToUnlockDoor(Action):
-#     def name(self) -> str:
-#         return "action_try_to_unlock_door"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         # Check if the user has the key
-#         has_key = tracker.get_slot("key_found")
-
-#         if has_key:
-#             dispatcher.utter_message(text="The door creaks open, and you step into a dark corridor.")
-#             return [SlotSet("door_unlocked", True)]
-#         else:
-#             dispatcher.utter_message(text="The door is locked. It seems you need a key to open it.")
-#             return []
-
-# class ActionGoLeftInCorridor(Action):
-#     def name(self) -> str:
-#         return "action_go_left_in_corridor"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You reach a dead end and have to turn back.")
-#         return []
-
-# class ActionGoRightInCorridor(Action):
-#     def name(self) -> str:
-#         return "action_go_right_in_corridor"
-
-#     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
-#         dispatcher.utter_message(text="You go right and find another door leading into a second room.")
-#         return []
-
-
 class ActionDefaultFallback(Action):
 
     def name(self) -> Text: 
@@ -101,28 +37,116 @@ class ActionInitialize(Action):
         print(tracker.latest_message)
 
         if tracker.get_slot('game_data') is None or tracker.get_slot('game_data') == "null":
-            game_data = {"has_key": False, "room": "start"}
+            game_data = {"has_key": False, "room": "start", "door1_open": False}
             
         else: game_data = tracker.get_slot('game_data')
 
 
         
         user_intent = tracker.latest_message['intent']['name']
-        msg = "IDK ask someone else"
-        
-        if user_intent == 'greet':
-            msg = "Hello there, give me your key (if you have any)"
-            game_data['has_key']= False
-        elif user_intent == 'door_3':
-            msg = "You open the door and find a key"
-            game_data['has_key']= True
-        elif user_intent== 'door_1':
-            if(game_data['has_key']):
-                msg = "You open the door and escape"
+        msg = "I did not catch that. Mabye try something else."
+
+
+        if user_intent == 'inventory':
+            if game_data['has_key']:
+                msg= "You have the following items: Key to an unknown lock"
             else:
-                msg = "The door is verschlossen"
-        
+                msg = "You have not picked up any items on your journey yet."
+        if game_data['room']=="start":
+            if user_intent == 'greet':
+                msg = "You wake in a dark room with no memory of how you got here. There is a door and a small table in the room with you."
+                game_data['has_key']= False
+            elif user_intent == 'inspect_table':
+                if(game_data['has_key']):
+                    msg = "You already picked up the key, which seems to be the only relevant thing on this table."
+                else:
+                    game_data['has_key']= True
+                    msg = "You look on the table. Between old books and dust, you find a key."
+            elif user_intent == 'inspect_door':
+                if(game_data['has_key']):
+                  msg = "You already found a key. Would you like to use it?"
+                else:
+                    msg = "It seems like you would need a key to unlock this door."
+            elif user_intent== 'unlock_door':
+                if(game_data['has_key']& game_data['door1_open']==False):
+                    msg = "You open the door and find yourself looking at an empty hallway. Do you wish to go left or right?"
+                    game_data['door1_open']= True
+                if(game_data['has_key']& game_data['door1_open']):
+                    msg = "You open the door and find yourself looking at an empty hallway . Do you wish to go left or right?"
+                else:
+                    msg = "The door is still locked."
+            elif user_intent=='go_left':
+                msg = "You go to the left but find yourself facing a brick wall. You turn around and find yourself at the door you left through."        
+            elif user_intent=='go_right':
+                msg = "You go to the right and find a second door, which seems to be unlocked. You enter a second room."
+                game_data['room']= "second"
+            elif user_intent=='sleep':
+                msg= "You go back to sleep and wake up to your normal room. It was all just a dream."
 
         dispatcher.utter_message(text=msg)
 
         return [SlotSet("game_data", game_data)]
+    
+
+class ActionChooseBook(Action):
+    def name(self) -> Text:
+        return "action_choose_book"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        book = tracker.latest_message.get('text', '').lower()
+
+        if "cooking" in book:
+            dispatcher.utter_message(response="utter_cooking_book")
+        elif "legends" in book:
+            dispatcher.utter_message(response="utter_legends_book")
+        elif "royal" in book:
+            dispatcher.utter_message(response="utter_royal_book")
+            return [SlotSet("knows_order", True)]
+        else:
+            dispatcher.utter_message(text="I couldn't find that book.")
+        return []
+
+class ActionEnterCode(Action):
+    def name(self) -> Text:
+        return "action_enter_code"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        text = tracker.latest_message.get('text', '')
+        if "492" in text or "4 9 2" in text:
+            dispatcher.utter_message(response="utter_code_success")
+            return []
+        elif "4" in text and "9" in text and "2" in text:
+            dispatcher.utter_message(response="utter_code_wrong_order")
+        else:
+            dispatcher.utter_message(response="utter_code_wrong")
+        return []
+
+class ActionRecallMemory(Action):
+    def name(self) -> Text:
+        return "action_recall_memory"
+
+    def run(self, dispatcher: CollectingDispatcher,
+            tracker: Tracker,
+            domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
+
+        mem_text = []
+        if tracker.get_slot("mem_east"):
+            mem_text.append("King Alric - 4")
+        if tracker.get_slot("mem_north"):
+            mem_text.append("Queen Berena - 9")
+        if tracker.get_slot("mem_west"):
+            mem_text.append("Prince Cedric - 2")
+
+        if mem_text:
+            dispatcher.utter_message(response="utter_memory_recall")
+            for line in mem_text:
+                dispatcher.utter_message(text=line)
+        else:
+            dispatcher.utter_message(response="utter_memory_empty")
+        return []

@@ -1,6 +1,15 @@
 version: "3.1"
 
 nlu:
+
+- intent: inventory
+  examples: |
+    - inventory
+    - I want to see my items
+    - what do I have 
+    - I want to see my inventory
+
+
 - intent: greet
   examples: |
     - Hello
@@ -47,10 +56,3 @@ nlu:
     - Sleep again
     - Try to sleep
 
-- intent: door_3
-  examples: |
-    - the other door
-    - door three
-    - the door no one knows about
-    - the unknown door
-    - the secret door
