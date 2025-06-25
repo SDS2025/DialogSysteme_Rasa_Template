@@ -8,7 +8,7 @@ stories:
 
 - story: Inspect table
   steps:
-    - intent: inspect_table
+    - intent: inspect_table2
     - action: utter_table_description
 
 - story: Bookshelf and choose royal
