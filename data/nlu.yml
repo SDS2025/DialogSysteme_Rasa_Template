@@ -56,3 +56,9 @@ nlu:
     - Sleep again
     - Try to sleep
 
+- intent: try_code
+  examples: |
+    - try [123](code)
+    - is it [456](code)?
+    - [789](code)
+    - maybe it's [000](code)

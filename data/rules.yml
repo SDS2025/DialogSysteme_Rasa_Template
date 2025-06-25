@@ -43,3 +43,8 @@ rules:
   steps:
   - intent: sleep
   - action: action_initialize
+
+- rule: Try a code
+  steps:
+    - intent: try_code
+    - action: action_check_code

@@ -8,7 +8,10 @@ intents:
 - go_left
 - go_right
 - sleep
+- try_code
 
+entities:
+  - code
 
 slots: 
   game_data: 
@@ -16,7 +19,18 @@ slots:
     initial_value: null
     mappings: 
       - type: custom
+  code:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: code
 
+responses:
+  utter_correct:
+    - text: "That's correct! You unlocked it. 🎉"
+  utter_wrong:
+    - text: "Nope, {code} is not the right code. Try again."
 
 session_config:
   session_expiration_time: 60
@@ -25,3 +39,4 @@ session_config:
 actions:
 - action_initialize
 - action_default_fallback
+- action_check_code

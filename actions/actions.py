@@ -150,3 +150,18 @@ class ActionRecallMemory(Action):
         else:
             dispatcher.utter_message(response="utter_memory_empty")
         return []
+    
+class ActionCheckCode(Action):
+    def name(self):
+        return "action_check_code"
+
+    def run(self, dispatcher, tracker: Tracker, domain):
+        correct_code = "123"
+        code = next(tracker.get_latest_entity_values("code"), None)
+        
+        if code == correct_code:
+            dispatcher.utter_message(response="utter_correct")
+        else:
+            dispatcher.utter_message(response="utter_wrong", code=code)
+        
+        return []
