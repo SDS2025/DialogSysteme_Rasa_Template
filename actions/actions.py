@@ -23,7 +23,7 @@ class ActionMemory(Action):
 # Slot für Bücher
         selected_book = tracker.latest_message.get('text', '').strip()
 
-        default_game_data = {
+        default_game_data2 = {
             "order": False,
             "door_lock": False,
             "painting east": False,
@@ -35,20 +35,32 @@ class ActionMemory(Action):
         game_data2 = tracker.get_slot('game_data2') or {}
 
 # Fehlende Keys auffüllen
-        for key, default in default_game_data.items():
+        for key, default in default_game_data2.items():
            game_data2.setdefault(key, default)
         
         user_intent = tracker.latest_message['intent']['name']
 # Logik für Memory
         if user_intent == 'memory':
-            if game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]:
+            if game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"] and not game_data2["order"]:
                 dispatcher.utter_message(response="utter_code_numbers")
-            elif game_data2["order"] and (game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]):
-                dispatcher.utter_message(response="utter_memory_empty")
             elif game_data2["order"] and game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]:
                 dispatcher.utter_message(response="utter_memory_lock")
             elif game_data2["order"]== True:
                 dispatcher.utter_message(response="utter_memory_book")
+            elif game_data2["painting east"]== True:
+                dispatcher.utter_message(text="King Alric - 4")
+            elif game_data2["painting west"]== True:
+                dispatcher.utter_message(text="Prince Cedric - 2")
+            elif game_data2["painting north"]== True:
+                dispatcher.utter_message(text="Queen Berena - 9")
+            elif game_data2["painting east"] and game_data2["painting west"]:
+                dispatcher.utter_message(text="King Alric - 4\n Prince Cedric - 2")
+            elif game_data2["painting east"] and game_data2["painting north"]:
+                dispatcher.utter_message(text="King Alric - 4\n Queen Berena - 9")
+            elif game_data2["painting west"] and game_data2["painting north"]:
+                dispatcher.utter_message(text="Queen Berena - 9\nPrince Cedric - 2")
+            elif not (game_data2["order"] and game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]):
+                dispatcher.utter_message(response="utter_memory_empty")
             else:
                 dispatcher.utter_message(response="utter_error")      
  # Logik für Bücher
