@@ -2,6 +2,7 @@ version: '3.1'
 intents:
   - inventory 
   - greet
+  - greet_other
   - inspect_table
   - inspect_banquet_table
   - inspect_door
@@ -9,7 +10,7 @@ intents:
   - go_left
   - go_right
   - sleep
-  - inspect_table2
+  # - inspect_table2
   - inspect_painting
   - painting_east
   - painting_north
@@ -29,6 +30,18 @@ entities:
   - code
 
 slots: 
+  current_room:
+    type: categorical
+    values:
+      - first_room
+      - hallway
+      - second_room     
+      - freedom 
+    initial_value: first_room
+    influence_conversation: false
+    mappings:
+      - type: custom
+
   game_data: 
     type: rasa.shared.core.slots.AnySlot
     initial_value: null
@@ -63,14 +76,73 @@ actions:
 - action_default_fallback
 - action_enter_code
 - action_memory
+- action_recall_memory
 
 responses:
+  utter_intro_other:
+  - condition:
+      - type: slot
+        name: current_room
+        value: first_room
+    text: >
+        You wake in a dark room with no memory of how you got here. There is a door and a small table in the room with you..
+
+  - condition:
+      - type: slot
+        name: current_room
+        value: hallway
+    text: "You open the door and find yourself looking at an empty hallway . Do you wish to go left or right?"
+
+  - condition:
+      - type: slot
+        name: current_room
+        value: second_room
+    text: >
+        You enter a grand room lit by flickering torches. A lavish banquet table sits in the center.
+        Paintings hang on the east, north, and west walls. There's a bookshelf beside the door you entered,
+        and another locked door on the far end of the room, secured with a number padlock.
+
+  - condition:
+      - type: slot
+        name: current_room
+        value: freedom
+    text: >
+        The door closes shut behind you as you rush to the exit. The thick city smog embraces you...
+
+        
+  utter_lookat_table:
+  - condition:
+      - type: slot
+        name: current_room
+        value: first_room
+    text: >
+        You look on the table. Between old books and dust, you find a key.
+
+  - condition:
+      - type: slot
+        name: current_room
+        value: hallway
+    text: "Doesn't look like there's a table in this hallway"
+
+  - condition:
+      - type: slot
+        name: current_room
+        value: second_room
+    text: >
+        The banquet table is ornate, set with silverware and crystal goblets.
+        Roasted pheasants and golden apples sit untouched.
+        The tablecloth is embroidered with scenes of ancient battles, but nothing unusual stands out.
+
   utter_intro:
     - text: >
         You enter a grand room lit by flickering torches. A lavish banquet table sits in the center.
         Paintings hang on the east, north, and west walls. There's a bookshelf beside the door you entered,
         and another locked door on the far end of the room, secured with a number padlock.
+  utter_door_room2:
+    - text: >
+        The door is secured with a three-number padlock.
 
+# TODO: comment
   utter_table_description:
     - text: >
         The banquet table is ornate, set with silverware and crystal goblets.

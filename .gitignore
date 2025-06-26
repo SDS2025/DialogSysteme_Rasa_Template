@@ -32,3 +32,6 @@ profile.*
 *.tar.gz
 .rasa/
 /actions/_pycache_/
+open_env.bat
+launch.json
+tasks.json

@@ -8,14 +8,20 @@ stories:
 #     - intent: greet
 #     - action: utter_intro
 
-- story: Inspect table
-  steps:
-    - intent: inspect_banquet_table
-    - action: utter_table_description
+# - story: Greet and show room
+#   steps:
+#     - intent: greet_other
+#     - action: utter_intro_other
 
-- story: Inspect table
-  steps:
-    - intent: inspect_table2
+# - story: Inspect table
+#   steps:
+#     - intent: inspect_banquet_table
+#     - action: utter_table_description
+
+# - story: Inspect table
+#   steps:
+#     - intent: inspect_table
+#     - action: utter_table_description
 
 - story: Bookshelf and choose royal
   steps:

@@ -12,6 +12,60 @@ rules:
   - intent: greet
   - action: action_initialize
 
+- rule: Greet Other
+  steps:
+  - intent: greet_other
+  - action: utter_intro_other
+
+- rule: inspect_bookshelf
+  steps:
+  - intent: inspect_bookshelf
+  - action: utter_bookshelf
+
+- rule: royal book
+  steps:
+  - intent: Royal_book
+  - action: action_memory
+
+- rule: Legends book
+  steps:
+  - intent: Legends_book
+  - action: action_memory
+
+- rule: Cooking book
+  steps:
+  - intent: Cooking_book
+  - action: action_memory
+
+- rule: Inspect painting east
+  steps:
+    - intent: painting_east
+    - action: action_memory
+
+- rule: Inspect painting north
+  steps:
+    - intent: painting_north
+    - action: action_memory
+
+- rule: Inspect painting west
+  steps:
+    - intent: painting_west
+    - action: action_memory
+
+- rule: memory
+  steps:
+    - intent: memory
+    - action: action_memory
+
+# - story: Check door and enter code
+#   steps:
+#     - intent: check_door
+#     - action: action_enter_code
+
+- rule: Check door and enter code
+  steps:
+    - intent: enter_code
+    - action: action_enter_code
 
 - rule: inspect_table
   steps:

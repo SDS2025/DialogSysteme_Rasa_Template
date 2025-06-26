@@ -9,7 +9,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet
+from rasa_sdk.events import SlotSet, ActionExecuted
 
 
 class ActionDefaultFallback(Action):
@@ -39,51 +39,84 @@ class ActionInitialize(Action):
             
         else: game_data = tracker.get_slot('game_data')
 
-
+        current_room = tracker.get_slot('current_room') or 'first_room'
+        print(f'current_room: {current_room}')
+        response = None
+        # return [SlotSet("current_room", "library")]
         
         user_intent = tracker.latest_message['intent']['name']
-        msg = "I did not catch that. Mabye try something else."
+        msg = "I did not catch that. Maybe try something else."
 
+        has_key = game_data['has_key']  # type: bool
 
         if user_intent == 'inventory':
-            if game_data['has_key']:
+            if has_key:
                 msg= "You have the following items: Key to an unknown lock"
             else:
                 msg = "You have not picked up any items on your journey yet."
-        if game_data['room']=="start":
-            if user_intent == 'greet':
-                msg = "You wake in a dark room with no memory of how you got here. There is a door and a small table in the room with you."
-                game_data['has_key']= False
-            elif user_intent == 'inspect_table':
-                if(game_data['has_key']):
+
+        if user_intent == 'greet':
+            response = "utter_intro_other"
+
+        if user_intent == 'inspect_table':
+            if current_room == "first_room":
+                if(has_key):
                     msg = "You already picked up the key, which seems to be the only relevant thing on this table."
                 else:
-                    game_data['has_key']= True
-                    msg = "You look on the table. Between old books and dust, you find a key."
+                    has_key= True
+                    # msg = "You look on the table. Between old books and dust, you find a key."
+                    response = "utter_lookat_table"
+            else:
+                response = "utter_lookat_table"
+        
+        if game_data['room']=="start":
+            if user_intent == 'greet':
+                # msg = "You wake in a dark room with no memory of how you got here. There is a door and a small table in the room with you."
+                # response = "utter_intro_other"
+                has_key= False
+            # elif user_intent == 'inspect_table':
+            #     if(has_key):
+            #         msg = "You already picked up the key, which seems to be the only relevant thing on this table."
+            #     else:
+            #         has_key= True
+            #         # msg = "You look on the table. Between old books and dust, you find a key."
+            #         response = "utter_lookat_table"
             elif user_intent == 'inspect_door':
-                if(game_data['has_key']):
+                if(has_key):
                   msg = "You already found a key. Would you like to use it?"
                 else:
                     msg = "It seems like you would need a key to unlock this door."
             elif user_intent== 'unlock_door':
-                if(game_data['has_key']& game_data['door1_open']==False):
+                if(has_key& game_data['door1_open']==False):
                     msg = "You open the door and find yourself looking at an empty hallway. Do you wish to go left or right?"
                     game_data['door1_open']= True
-                if(game_data['has_key']& game_data['door1_open']):
+                    current_room = 'hallway'
+                if(has_key& game_data['door1_open']):
                     msg = "You open the door and find yourself looking at an empty hallway . Do you wish to go left or right?"
                 else:
                     msg = "The door is still locked."
             elif user_intent=='go_left':
+                # needs to check for key?
                 msg = "You go to the left but find yourself facing a brick wall. You turn around and find yourself at the door you left through."        
             elif user_intent=='go_right':
+                # needs to check for key?
                 msg = "You go to the right and find a second door, which seems to be unlocked. You enter a second room."
                 game_data['room']= "second"
+                current_room = 'second_room'
             elif user_intent=='sleep':
                 msg= "You go back to sleep and wake up to your normal room. It was all just a dream."
+        elif game_data['room']=="second":
+            if user_intent == 'inspect_door':
+                # return [ActionExecuted("action_enter_code")]
+                response = "utter_door_room2"
 
-        dispatcher.utter_message(text=msg)
+        game_data['has_key'] = has_key
+        if response:
+            dispatcher.utter_message(response=response)
+        else:
+            dispatcher.utter_message(text=msg)
 
-        return [SlotSet("game_data", game_data)]
+        return [SlotSet("game_data", game_data), SlotSet("current_room", current_room)]
     
 
 class ActionChooseBook(Action):
@@ -199,7 +232,7 @@ class ActionEnterCode(Action):
         text = tracker.latest_message.get('text', '')
         if "492" in text or "4 9 2" in text:
             dispatcher.utter_message(response="utter_code_success")
-            return []
+            return [SlotSet("current_room", "freedom")]
         elif "4" in text and "9" in text and "2" in text:
             dispatcher.utter_message(response="utter_code_wrong_order")
         else:
