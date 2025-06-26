@@ -9,7 +9,7 @@ from typing import Any, Text, Dict, List
 
 from rasa_sdk import Action, Tracker
 from rasa_sdk.executor import CollectingDispatcher
-from rasa_sdk.events import SlotSet, ActionExecuted
+from rasa_sdk.events import SlotSet, ActionExecuted, UserUtteranceReverted
 
 
 class ActionDefaultFallback(Action):
@@ -19,7 +19,7 @@ class ActionDefaultFallback(Action):
     
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: dict):
         dispatcher.utter_message(text="Please repeat your answer again. If it does not work, try phrasing it differently.")
-        return []
+        return [UserUtteranceReverted()]
 
 
 
