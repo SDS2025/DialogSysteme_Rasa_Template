@@ -225,18 +225,43 @@ class ActionEnterCode(Action):
     def name(self) -> Text:
         return "action_enter_code"
 
+    def get_code_parts(self, code: str) -> list[int]:
+        code_l = list(code)
+        try:
+            code_l = [int(x) for x in code_l]
+        except Exception as ex:
+            print(f'get_code_parts exception: {ex}') # hm maybe not just throw an ex
+        return code_l
+
+
     def run(self, dispatcher: CollectingDispatcher,
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        text = tracker.latest_message.get('text', '')
-        if "492" in text or "4 9 2" in text:
-            dispatcher.utter_message(response="utter_code_success")
-            return [SlotSet("current_room", "freedom")]
-        elif "4" in text and "9" in text and "2" in text:
+        correct_code = "429" # this could be randomized
+        code = next(tracker.get_latest_entity_values("code"), None)
+        correct_code_l = self.get_code_parts(correct_code)
+        code_l = self.get_code_parts(code)
+        permut = all([c in code_l for c in correct_code_l])
+        # print('permut', [c in code_l for c in correct_code_l])
+
+        if len(set(code_l)) == 1:
+            dispatcher.utter_message(response="utter_too_easy")
+        if permut:
             dispatcher.utter_message(response="utter_code_wrong_order")
+        if code == correct_code:
+            dispatcher.utter_message(response="utter_code_success")
         else:
-            dispatcher.utter_message(response="utter_code_wrong")
+            dispatcher.utter_message(response="utter_code_wrong", code=code)
+
+        # text = tracker.latest_message.get('text', '')
+        # if "492" in text or "4 9 2" in text:
+        #     dispatcher.utter_message(response="utter_code_success")
+        #     return [SlotSet("current_room", "freedom")]
+        # elif "4" in text and "9" in text and "2" in text:
+        #     dispatcher.utter_message(response="utter_code_wrong_order")
+        # else:
+        #     dispatcher.utter_message(response="utter_code_wrong")
         return []
     
 class ActionRecallMemory(Action):

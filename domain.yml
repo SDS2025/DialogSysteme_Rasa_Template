@@ -30,6 +30,12 @@ entities:
   - code
 
 slots: 
+  code:
+    type: text
+    influence_conversation: false
+    mappings:
+      - type: from_entity
+        entity: code
   current_room:
     type: categorical
     values:
@@ -189,6 +195,9 @@ responses:
   utter_code_success:
     - text: >
         You enter the code: 4, 9, 2. The lock beeps and clicks open. The door creaks ajar. Well done, adventurer.
+        
+  utter_too_easy:
+    - text: "Did you really think it will be that easy?"
 
   utter_code_wrong_order:
     - text: >

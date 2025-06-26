@@ -70,9 +70,9 @@ stories:
 #     - intent: return_to_room
 #     - action: utter_intro
 
-- story: Check door and enter code
-  steps:
-    - intent: check_door
-    - action: action_enter_code
-    - intent: enter_code
-    - action: action_enter_code
+# - story: Check door and enter code
+#   steps:
+#     - intent: check_door
+#     - action: action_enter_code
+#     - intent: enter_code
+#     - action: action_enter_code

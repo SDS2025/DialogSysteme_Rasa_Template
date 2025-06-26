@@ -119,13 +119,14 @@ nlu:
     - Look at the door
     - Inspect the door
     - Check the door
+    - door
     
-- intent: check_door
-  examples: |
-    - check the door
-    - go to the door
-    - look at the lock
-    - locked door
+# - intent: check_door
+#   examples: |
+#     - check the door
+#     - go to the door
+#     - look at the lock
+#     - locked door
 
   
 - intent: unlock_door
@@ -211,11 +212,18 @@ nlu:
 #     - bookshelf
 #     - books 
     
+# - intent: enter_code
+#   examples: |
+#     - the code is 492
+#     - try 4 9 2
+#     - enter code 492
+
 - intent: enter_code
   examples: |
-    - the code is 492
-    - try 4 9 2
-    - enter code 492
+    - try [123](code)
+    - is it [456](code)?
+    - [789](code)
+    - maybe it's [000](code)
 
 #- intent: recall_memory
 #  examples: |
