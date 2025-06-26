@@ -170,30 +170,59 @@ class ActionMemory(Action):
            game_data2.setdefault(key, default)
         
         user_intent = tracker.latest_message['intent']['name']
+        knows_paintings = game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]
+        knows_order = game_data2["order"]
 # Logik für Memory
         if user_intent == 'memory':
-            if game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"] and not game_data2["order"]:
-                dispatcher.utter_message(response="utter_code_numbers")
-            elif game_data2["order"] and game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]:
-                dispatcher.utter_message(response="utter_memory_lock")
-            elif game_data2["order"]== True:
-                dispatcher.utter_message(response="utter_memory_book")
-            elif game_data2["painting east"]== True:
-                dispatcher.utter_message(text="King Alric - 4")
-            elif game_data2["painting west"]== True:
-                dispatcher.utter_message(text="Prince Cedric - 2")
-            elif game_data2["painting north"]== True:
-                dispatcher.utter_message(text="Queen Berena - 9")
-            elif game_data2["painting east"] and game_data2["painting west"]:
-                dispatcher.utter_message(text="King Alric - 4\n Prince Cedric - 2")
-            elif game_data2["painting east"] and game_data2["painting north"]:
-                dispatcher.utter_message(text="King Alric - 4\n Queen Berena - 9")
-            elif game_data2["painting west"] and game_data2["painting north"]:
-                dispatcher.utter_message(text="Queen Berena - 9\nPrince Cedric - 2")
-            elif not (game_data2["order"] and game_data2["painting east"] and game_data2["painting west"] and game_data2["painting north"]):
-                dispatcher.utter_message(response="utter_memory_empty")
+            if not knows_paintings:
+                messages = []
+                painting_info = {
+                    "painting east": "King Alric - 4",
+                    "painting west": "Prince Cedric - 2",
+                    "painting north": "Queen Berena - 9"
+                }
+                for k,v in painting_info.items():
+                    if game_data2[k]== True:
+                        messages.append(v)
+                dispatcher.utter_message(text=', '.join(messages))
+                dispatcher.utter_message(response=knows_order and "utter_memory_book" or "utter_error")
             else:
-                dispatcher.utter_message(response="utter_error")      
+                dispatcher.utter_message(response=knows_order and "utter_memory_lock" or "utter_memory_empty")
+
+                    
+                # if knows_order and knows_paintings:
+                #     dispatcher.utter_message(response="utter_memory_lock")
+                # elif knows_order== True:
+                #     dispatcher.utter_message(response="utter_memory_book")
+                # elif not (knows_order and knows_paintings):
+                #     dispatcher.utter_message(response="utter_memory_empty")
+                # else:
+                #     dispatcher.utter_message(response="utter_error")    
+
+
+
+            # if knows_paintings and not game_data2["order"]:
+            #     dispatcher.utter_message(response="utter_code_numbers")
+            # elif game_data2["order"] and knows_paintings:
+            #     dispatcher.utter_message(response="utter_memory_lock")
+            # elif game_data2["order"]== True:
+            #     dispatcher.utter_message(response="utter_memory_book")
+            # elif game_data2["painting east"]== True:
+            #     dispatcher.utter_message(text="King Alric - 4")
+            # elif game_data2["painting west"]== True:
+            #     dispatcher.utter_message(text="Prince Cedric - 2")
+            # elif game_data2["painting north"]== True:
+            #     dispatcher.utter_message(text="Queen Berena - 9")
+            # elif game_data2["painting east"] and game_data2["painting west"]:
+            #     dispatcher.utter_message(text="King Alric - 4\n Prince Cedric - 2")
+            # elif game_data2["painting east"] and game_data2["painting north"]:
+            #     dispatcher.utter_message(text="King Alric - 4\n Queen Berena - 9")
+            # elif game_data2["painting west"] and game_data2["painting north"]:
+            #     dispatcher.utter_message(text="Queen Berena - 9\nPrince Cedric - 2")
+            # elif not (game_data2["order"] and knows_paintings):
+            #     dispatcher.utter_message(response="utter_memory_empty")
+            # else:
+            #     dispatcher.utter_message(response="utter_error")      
  # Logik für Bücher
         elif user_intent == 'Cooking_book':
             dispatcher.utter_message(response="utter_cooking_book")
@@ -238,21 +267,23 @@ class ActionEnterCode(Action):
             tracker: Tracker,
             domain: Dict[Text, Any]) -> List[Dict[Text, Any]]:
 
-        correct_code = "429" # this could be randomized
+        correct_code = "492" # this could be randomized
         code = next(tracker.get_latest_entity_values("code"), None)
         correct_code_l = self.get_code_parts(correct_code)
         code_l = self.get_code_parts(code)
         permut = all([c in code_l for c in correct_code_l])
         # print('permut', [c in code_l for c in correct_code_l])
 
-        if len(set(code_l)) == 1:
-            dispatcher.utter_message(response="utter_too_easy")
-        if permut:
-            dispatcher.utter_message(response="utter_code_wrong_order")
         if code == correct_code:
             dispatcher.utter_message(response="utter_code_success")
+            return [SlotSet("current_room", "freedom")]
         else:
-            dispatcher.utter_message(response="utter_code_wrong", code=code)
+            if len(set(code_l)) == 1:
+                dispatcher.utter_message(response="utter_too_easy")
+            if permut:
+                dispatcher.utter_message(response="utter_code_wrong_order")
+            else:
+                dispatcher.utter_message(response="utter_code_wrong", code=code)
 
         # text = tracker.latest_message.get('text', '')
         # if "492" in text or "4 9 2" in text:
